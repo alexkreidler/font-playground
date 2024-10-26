@@ -11,16 +11,51 @@ import { Slider } from "@/components/ui/slider"
 import FontPicker from 'react-fontpicker-ts'
 import 'react-fontpicker-ts/dist/index.css'
 
+const serifGoogleFonts = [
+  'EB Garamond',
+  'Crimson Text',
+  'Crimson Pro',
+  'Spectral',
+  'Merriweather',
+  'Playfair Display',
+  'Lora',
+  'Bitter',
+  'Libre Baskerville',
+  'Noto Serif',
+  'PT Serif',
+  'Roboto Slab',
+  "Alegreya",
+  "Old Standard TT",
+  "Vollkorn",
+  "Cormorant Garamond",
+];
+
+
+const sansSerifGoogleFonts = [
+  'Inter',
+  'DM Sans',
+  'Heebo',
+  'IBM Plex Sans',
+  'Work Sans',
+  'Source Sans Pro',
+  'PT Sans',
+  'Noto Sans',
+  'Fira Sans',
+  'Rubik',
+  'Karla'
+];
+
+
 export default function FontPlayground() {
   const [headingFont, setHeadingFont] = useState('Inter')
   const [bodyFont, setBodyFont] = useState('EB Garamond')
   const [textColor, setTextColor] = useState('#000000')
   const [backgroundColor, setBackgroundColor] = useState('#ffffff')
-  const [headingLineHeight, setHeadingLineHeight] = useState(1.2)
-  const [bodyLineHeight, setBodyLineHeight] = useState(1.5)
   const [width, setWidth] = useState(630)
-  const [headingFontSize, setHeadingFontSize] = useState(36)
-  const [bodyFontSize, setBodyFontSize] = useState(20)
+  const [headingLineGap, setHeadingLineGap] = useState(20)
+  const [bodyLineGap, setBodyLineGap] = useState(20)
+  const [headingCapHeight, setHeadingCapHeight] = useState(22)
+  const [bodyCapHeight, setBodyCapHeight] = useState(15)
 
   const getMetrics = (fontFamily) => {
     const familyName = fontFamilyToCamelCase(fontFamily)
@@ -32,14 +67,14 @@ export default function FontPlayground() {
 
   const headingStyle = createStyleObject({
     fontMetrics: headingMetrics,
-    fontSize: headingFontSize,
-    leading: headingFontSize * headingLineHeight,
+    capHeight: headingCapHeight,
+    lineGap: headingLineGap,
   })
 
   const bodyStyle = createStyleObject({
     fontMetrics: bodyMetrics,
-    fontSize: bodyFontSize,
-    leading: bodyFontSize * bodyLineHeight,
+    capHeight: bodyCapHeight,
+    lineGap: bodyLineGap,
   })
 
   return (
@@ -93,59 +128,59 @@ export default function FontPlayground() {
             </div>
             <div>
               <Label htmlFor="heading-font">Heading Font</Label>
-              <FontPicker autoLoad defaultValue={headingFont} value={(font1: string) => setHeadingFont(font1)} />
+              <FontPicker googleFonts={sansSerifGoogleFonts} autoLoad defaultValue={headingFont} value={(font1: string) => setHeadingFont(font1)} />
             </div>
             <div>
-              <Label htmlFor="heading-font-size">Heading Font Size</Label>
+              <Label htmlFor="heading-cap-height">Heading Cap Height</Label>
               <Slider
-                id="heading-font-size"
-                min={24}
-                max={72}
+                id="heading-cap-height"
+                min={0}
+                max={50}
                 step={1}
-                value={[headingFontSize]}
-                onValueChange={(value) => setHeadingFontSize(value[0])}
+                value={[headingCapHeight]}
+                onValueChange={(value) => setHeadingCapHeight(value[0])}
               />
-              <span>{headingFontSize}px</span>
+              <span>{headingCapHeight}</span>
             </div>
             <div>
-              <Label htmlFor="heading-line-height">Heading Line Height</Label>
+              <Label htmlFor="heading-line-gap">Heading Line Gap</Label>
               <Slider
-                id="heading-line-height"
-                min={1}
-                max={2}
+                id="heading-line-gap"
+                min={0}
+                max={200}
                 step={0.1}
-                value={[headingLineHeight]}
-                onValueChange={(value) => setHeadingLineHeight(value[0])}
+                value={[headingLineGap]}
+                onValueChange={(value) => setHeadingLineGap(value[0])}
               />
-              <span>{headingLineHeight.toFixed(1)}</span>
+              <span>{headingLineGap}</span>
             </div>
             <div>
               <Label htmlFor="body-font">Body Font</Label>
-              <FontPicker autoLoad defaultValue={bodyFont} value={(font1: string) => setBodyFont(font1)} />
+              <FontPicker googleFonts={serifGoogleFonts} autoLoad defaultValue={bodyFont} value={(font1: string) => setBodyFont(font1)} />
             </div>
             <div>
-              <Label htmlFor="body-font-size">Body Font Size</Label>
+              <Label htmlFor="body-cap-height">Body Cap Height</Label>
               <Slider
-                id="body-font-size"
-                min={12}
-                max={36}
+                id="body-cap-height"
+                min={0}
+                max={50}
                 step={1}
-                value={[bodyFontSize]}
-                onValueChange={(value) => setBodyFontSize(value[0])}
+                value={[bodyCapHeight]}
+                onValueChange={(value) => setBodyCapHeight(value[0])}
               />
-              <span>{bodyFontSize}px</span>
+              <span>{bodyCapHeight}</span>
             </div>
             <div>
-              <Label htmlFor="body-line-height">Body Line Height</Label>
+              <Label htmlFor="body-line-gap">Body Line Gap</Label>
               <Slider
-                id="body-line-height"
-                min={1}
-                max={2}
+                id="body-line-gap"
+                min={0}
+                max={200}
                 step={0.1}
-                value={[bodyLineHeight]}
-                onValueChange={(value) => setBodyLineHeight(value[0])}
+                value={[bodyLineGap]}
+                onValueChange={(value) => setBodyLineGap(value[0])}
               />
-              <span>{bodyLineHeight.toFixed(1)}</span>
+              <span>{bodyLineGap}</span>
             </div>
           </div>
         </div>
