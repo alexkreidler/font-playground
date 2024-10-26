@@ -11,56 +11,62 @@ import { Slider } from "@/components/ui/slider"
 import FontPicker from 'react-fontpicker-ts'
 import 'react-fontpicker-ts/dist/index.css'
 
-const serifGoogleFonts = [
-  'EB Garamond',
-  'Crimson Text',
-  'Crimson Pro',
-  'Spectral',
-  'Merriweather',
-  'Playfair Display',
-  'Lora',
-  'Bitter',
-  'Libre Baskerville',
-  'Noto Serif',
-  'PT Serif',
-  'Roboto Slab',
-  "Alegreya",
-  "Old Standard TT",
-  "Vollkorn",
-  "Cormorant Garamond",
-];
+// const serifGoogleFonts = [
+//   'EB Garamond',
+//   'Crimson Text',
+//   'Crimson Pro',
+//   'Spectral',
+//   'Merriweather',
+//   'Playfair Display',
+//   'Lora',
+//   'Bitter',
+//   'Libre Baskerville',
+//   'Noto Serif',
+//   'PT Serif',
+//   'Roboto Slab',
+//   "Alegreya",
+//   "Old Standard TT",
+//   "Vollkorn",
+//   "Cormorant Garamond",
+// ];
 
 
-const sansSerifGoogleFonts = [
-  'Inter',
-  'DM Sans',
-  'Heebo',
-  'IBM Plex Sans',
-  'Work Sans',
-  'Source Sans Pro',
-  'PT Sans',
-  'Noto Sans',
-  'Fira Sans',
-  'Rubik',
-  'Karla'
-];
+// const sansSerifGoogleFonts = [
+//   'Inter',
+//   'DM Sans',
+//   'Heebo',
+//   'IBM Plex Sans',
+//   'Work Sans',
+//   'Source Sans Pro',
+//   'PT Sans',
+//   'Noto Sans',
+//   'Fira Sans',
+//   'Rubik',
+//   'Karla'
+// ];
 
+const getMetrics = (fontFamily: string) => {
+  const familyName = fontFamilyToCamelCase(fontFamily)
+  if (!(familyName in entireMetricsCollection)) {
+    console.warn(`${familyName} metrics not found`)
+  }
+  return entireMetricsCollection[familyName] || entireMetricsCollection['arial'] // fallback to Arial if not found
+}
 
 export default function FontPlayground() {
+  useEffect(() => {
+    window.FONTS = entireMetricsCollection
+  }, [])
+  
   const [headingFont, setHeadingFont] = useState('Inter')
   const [bodyFont, setBodyFont] = useState('EB Garamond')
   const [textColor, setTextColor] = useState('#000000')
-  const [backgroundColor, setBackgroundColor] = useState('#ffffff')
+  const [backgroundColor, setBackgroundColor] = useState('#fffbf3')
   const [width, setWidth] = useState(630)
   const [headingLineGap, setHeadingLineGap] = useState(20)
   const [bodyLineGap, setBodyLineGap] = useState(20)
   const [headingCapHeight, setHeadingCapHeight] = useState(22)
   const [bodyCapHeight, setBodyCapHeight] = useState(15)
-
-  const getMetrics = (fontFamily) => {
-    const familyName = fontFamilyToCamelCase(fontFamily)
-    return entireMetricsCollection[familyName] || entireMetricsCollection['arial'] // fallback to Arial if not found
-  }
 
   const headingMetrics = getMetrics(headingFont)
   const bodyMetrics = getMetrics(bodyFont)
@@ -78,7 +84,7 @@ export default function FontPlayground() {
   })
 
   return (
-    <div>
+    <div style={{ backgroundColor }} className="h-full min-h-[100vh]">
       <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
         <h1 className="text-xl font-bold">Font Playground</h1>
         <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white">
@@ -92,12 +98,14 @@ export default function FontPlayground() {
           </svg>
         </a>
       </nav>
-      <div className="flex flex-row">
-        <div className="p-4 w-1/4">
-          <h2 className="text-lg font-bold mb-4">Properties</h2>
+      <div className="flex flex-col sm:flex-row p-4">
+        <div className="p-4 sm:w-1/4 bg-white rounded-lg shadow-md h-fit">
+          <h2 className="text-lg font-bold mb-3">Properties</h2>
+          <p className="mb-4">This tool uses the <a className='text-blue-800' href="https://seek-oss.github.io/capsize/">Capsize</a> library
+          to make the fonts look the same size (using the height of their capital letters).</p>
           <div className="grid gap-4">
             <div>
-              <Label htmlFor="width">Container Width</Label>
+              <Label htmlFor="width" className="mb-2 block">Container Width</Label>
               <Slider
                 id="width"
                 min={300}
@@ -109,7 +117,7 @@ export default function FontPlayground() {
               <span>{width}px</span>
             </div>
             <div>
-              <Label htmlFor="text-color">Text Color</Label>
+              <Label htmlFor="text-color" className="mb-2 block">Text Color</Label>
               <Input
                 type="color"
                 id="text-color"
@@ -118,7 +126,7 @@ export default function FontPlayground() {
               />
             </div>
             <div>
-              <Label htmlFor="background-color">Background Color</Label>
+              <Label htmlFor="background-color" className="mb-2 block">Background Color</Label>
               <Input
                 type="color"
                 id="background-color"
@@ -127,11 +135,11 @@ export default function FontPlayground() {
               />
             </div>
             <div>
-              <Label htmlFor="heading-font">Heading Font</Label>
-              <FontPicker googleFonts={sansSerifGoogleFonts} autoLoad defaultValue={headingFont} value={(font1: string) => setHeadingFont(font1)} />
+              <Label htmlFor="heading-font" className="mb-2 block">Heading Font</Label>
+              <FontPicker fontCategories={["sans-serif"]} autoLoad defaultValue={headingFont} value={(font1: string) => setHeadingFont(font1)} />
             </div>
             <div>
-              <Label htmlFor="heading-cap-height">Heading Cap Height</Label>
+              <Label htmlFor="heading-cap-height" className="mb-2 block">Heading Cap Height</Label>
               <Slider
                 id="heading-cap-height"
                 min={0}
@@ -143,7 +151,7 @@ export default function FontPlayground() {
               <span>{headingCapHeight}</span>
             </div>
             <div>
-              <Label htmlFor="heading-line-gap">Heading Line Gap</Label>
+              <Label htmlFor="heading-line-gap" className="mb-2 block">Heading Line Gap</Label>
               <Slider
                 id="heading-line-gap"
                 min={0}
@@ -155,11 +163,12 @@ export default function FontPlayground() {
               <span>{headingLineGap}</span>
             </div>
             <div>
-              <Label htmlFor="body-font">Body Font</Label>
-              <FontPicker googleFonts={serifGoogleFonts} autoLoad defaultValue={bodyFont} value={(font1: string) => setBodyFont(font1)} />
+              <Label htmlFor="body-font" className="mb-2 block">Body Font</Label>
+              {/* googleFonts={serifGoogleFonts} */}
+              <FontPicker fontCategories={["serif"]} autoLoad defaultValue={bodyFont} value={(font1: string) => setBodyFont(font1)} />
             </div>
             <div>
-              <Label htmlFor="body-cap-height">Body Cap Height</Label>
+              <Label htmlFor="body-cap-height" className="mb-2 block">Body Cap Height</Label>
               <Slider
                 id="body-cap-height"
                 min={0}
@@ -171,7 +180,7 @@ export default function FontPlayground() {
               <span>{bodyCapHeight}</span>
             </div>
             <div>
-              <Label htmlFor="body-line-gap">Body Line Gap</Label>
+              <Label htmlFor="body-line-gap" className="mb-2 block">Body Line Gap</Label>
               <Slider
                 id="body-line-gap"
                 min={0}
@@ -184,7 +193,7 @@ export default function FontPlayground() {
             </div>
           </div>
         </div>
-        <div className="mx-auto mt-8" style={{ backgroundColor, width }}>
+        <div className="mx-auto mt-8" style={{ maxWidth: width }}>
           <article style={{ color: textColor }}>
             <h1 style={{
               ...headingStyle,
@@ -202,9 +211,38 @@ export default function FontPlayground() {
             </p>
             <p style={{
               ...bodyStyle,
+              marginBottom: '1rem',
               fontFamily: bodyFont,
             }}>
               The term typography is also applied to the style, arrangement, and appearance of the letters, numbers, and symbols created by the process. Type design is a closely related craft, sometimes considered part of typography; most typographers do not design typefaces, and some type designers do not consider themselves typographers.
+            </p>
+            
+            <p style={{
+              ...bodyStyle,
+              marginBottom: '1rem',
+              fontFamily: bodyFont,
+            }}>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt dolores velit illo sapiente officia repellat molestias fuga, totam ab error exercitationem beatae dolor quasi consectetur ad aliquid qui reiciendis! Enim!
+              Tempora tempore laudantium facere nemo, distinctio voluptates molestiae labore aliquam animi obcaecati exercitationem blanditiis sed nobis iure maxime. Facere, beatae. Sapiente nostrum soluta, maiores nulla alias iusto ut natus dolor.
+            </p>
+
+            
+            <p style={{
+              ...bodyStyle,
+              marginBottom: '1rem',
+              fontFamily: bodyFont,
+            }}>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nemo maiores in temporibus a numquam nam id laboriosam asperiores distinctio quae accusantium, architecto cum autem amet sed blanditiis? Deserunt, illum dolores.
+            </p>
+
+            
+            <p style={{
+              ...bodyStyle,
+              marginBottom: '1rem',
+              fontFamily: bodyFont,
+            }}>
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio eligendi quod aliquam veritatis quis deleniti sapiente id. Rem voluptate, repellendus dignissimos obcaecati molestiae non explicabo asperiores nemo dolor unde deleniti.
+              Tenetur quibusdam dolore vitae velit voluptatem! Doloribus, voluptates! Corporis dicta nihil hic alias culpa! Repudiandae enim, rerum, a omnis culpa cum earum porro cumque molestias eius voluptas recusandae, quis doloribus.
             </p>
           </article>
         </div>
