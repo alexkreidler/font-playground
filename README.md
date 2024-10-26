@@ -1,11 +1,15 @@
-# tailwind-vite
+# Font Playground
 
-A simple template for a Vite project with Tailwind in less than 100 lines of code.
+A tool to help you pick fonts by comparing them in a visually similar way.
 
-Based on the "Typescript with SWC" `create-vite` template.
+You can modify the container width, text and background colors, and the cap height, line gap, and font for both the heading and body text.
+
+![Screenshot of the font playground UI](screenshot.png)
 
 ## Uses
 
+-   [React Fontpicker](https://github.com/ae9is/react-fontpicker)
+-   [Capsize](https://seek-oss.github.io/capsize/)
 -   [Shadcn UI](https://ui.shadcn.com)
 -   [TailwindCSS](https://tailwindcss.com/)
 -   [Vite](https://vitejs.dev/)
