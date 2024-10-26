@@ -1,10 +1,9 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { createStyleObject } from '@capsizecss/core'
 import { fontFamilyToCamelCase } from '@capsizecss/metrics'
 import { entireMetricsCollection } from '@capsizecss/metrics/entireMetricsCollection'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
@@ -50,11 +49,13 @@ const getMetrics = (fontFamily: string) => {
   if (!(familyName in entireMetricsCollection)) {
     console.warn(`${familyName} metrics not found`)
   }
+  // @ts-ignore
   return entireMetricsCollection[familyName] || entireMetricsCollection['arial'] // fallback to Arial if not found
 }
 
 export default function FontPlayground() {
   useEffect(() => {
+    // @ts-ignore
     window.FONTS = entireMetricsCollection
   }, [])
   
