@@ -88,7 +88,7 @@ export default function FontPlayground() {
     <div style={{ backgroundColor }} className="h-full min-h-[100vh]">
       <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
         <h1 className="text-xl font-bold">Font Playground</h1>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white">
+        <a href="https://github.com/alexkreidler/font-playground" target="_blank" rel="noopener noreferrer" className="text-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
